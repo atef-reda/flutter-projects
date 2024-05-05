@@ -8,7 +8,10 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: AppColor.grey,
-      body: Text('Login'),
+      body: Column(children: [
+        Text('Login')
+      ],
+        ),
     );
   }
 }
