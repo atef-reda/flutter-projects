@@ -1,0 +1,327 @@
+========================== Get Routing================================
+class Home extends StatelessWidget {
+  const Home({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.purpleAccent,
+        title: const Text('Home'),
+      ),
+      body:Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: MaterialButton(
+              onPressed: () {
+                Get.toNamed('/pageone');
+                // Navigator.push(context,
+                    // MaterialPageRoute(builder: (context) => const PageOne()));
+              },
+              color: Colors.purpleAccent,
+              child: const Text('Page One'),
+            ),
+          ),
+          Center(
+            child: MaterialButton(
+              onPressed: () {
+                Get.off(()=>const PageTwo());
+                // Navigator.pushReplacement(context,
+                //     MaterialPageRoute(builder: (context) => const PageTwo()));
+              },
+              color: Colors.purpleAccent,
+              child: const Text('Page Two (off)'),
+            ),
+          ),
+          Center(
+            child: MaterialButton(
+              onPressed: () {
+                Get.offAll(()=>const PageThree());
+                // Navigator.pushAndRemoveUntil(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => const PageThree()),
+                //   (route) => false,
+                // );
+              },
+              color: Colors.purpleAccent,
+              child: const Text('Page Three (offAll)'),
+            ),
+          ),
+          Center(
+            child: MaterialButton(
+              onPressed: () {
+                Get.back();
+                // Navigator.pop(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => const PageThree()),
+                // );
+              },
+              color: Colors.purpleAccent,
+              child: const Text('Back'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+===============================Get GetBuilder ======================
+GetBuilder ==> need update best in performance and storage
+Getx ==> streem
+Obx  ==> streem can use more than one controller using injection
+class Home extends StatelessWidget {
+  const Home({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          GetBuilder<HomeController>(
+            init: HomeController(),
+            builder: (controller) => Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      controller.increment();
+                    },
+                    icon: const Icon(Icons.add)),
+                Text('${controller.counter}'),
+                IconButton(
+                    onPressed: () {
+                      controller.decrement();
+                    },
+                    icon: const Icon(Icons.remove))
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+class HomeController extends GetxController{
+  int counter=0;
+
+  increment()
+  {
+    counter++;
+    update();
+  }
+
+  decrement()
+  {
+    counter--;
+    update();
+  }
+}
+============================= Getx ========================
+class Home extends StatelessWidget {
+  const Home({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          GetX<HomeController>(
+            init: HomeController(),
+            builder: (controller) => Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      controller.increment();
+                    },
+                    icon: const Icon(Icons.add)),
+                Text('${controller.counter.value}'),
+                IconButton(
+                    onPressed: () {
+                      controller.decrement();
+                    },
+                    icon: const Icon(Icons.remove))
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+class HomeController extends GetxController{
+  RxInt counter=0.obs;
+
+  increment()
+  {
+    counter++;
+    update();
+  }
+
+  decrement()
+  {
+    counter--;
+    update();
+  }
+}
+============================= Obx  ========================
+Stream Reactive as Getx Put Can deal With More 
+Than One controller Using Injection
+
+class Home extends StatelessWidget {
+  const Home({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    HomeController controller =Get.put(HomeController());
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Obx( () => Expanded(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        controller.increment();
+                      },
+                      icon: const Icon(Icons.add)),
+                  Text('${controller.counter.value}'),
+                  IconButton(
+                      onPressed: () {
+                        controller.decrement();
+                      },
+                      icon: const Icon(Icons.remove))
+                ],
+              ),
+          ),
+          )
+        ],
+      ),
+    );
+  }
+}
+class HomeController extends GetxController{
+  RxInt counter=0.obs;
+
+  increment()
+  {
+    counter++;
+    update();
+  }
+
+  decrement()
+  {
+    counter--;
+    update();
+  }
+}
+
+======================= injection using Put ======================
+if i exit from screen call ondelete() and remove data from memory 
+HomeController controller =Get.put(HomeController()); 
+
+if i exit from screen not call ondelete() and remove data from memory 
+use it when you want store data at exit from screen
+HomeController controller =Get.put(HomeController(),permanent: true);
+
+if controller not init befor enter its screen give error  
+HomeController controller =Get.find(); //find about controller init
+
+injection it one time only
+prepare controller at use HomeController controller =Get.find(); init it
+final controller =Get.lazyPut(() => HomeController());
+when it init using Get.find() and exit from this screen it call
+ondelete() and remove from memory so that it need to init 
+if you want to enter screen for twice time. to avoid this problem
+
+inject it many time if needed
+final controller=Get.lazyPut(()=>HomeController(),fenix: true);
+this method reset data in controller put not delete init for controller
+
+Binding ==>
+================================ MiddleWare ================
+  initialRoute: '/',
+      getPages: [
+        GetPage(
+            name: '/',
+            page: () => const LogIn(),
+            middlewares: [AuthMiddleWare()]),
+        GetPage(
+            name: '/home',
+            page: () => const Home(),
+            ),
+      ],
+
+
+class AuthMiddleWare extends GetMiddleware
+{
+  @override
+  RouteSettings? redirect(String? route) {
+    if(sharedPref?.getString('id')!=null) return const RouteSettings(name: '/home');
+    return super.redirect(route);
+    
+  }
+}
+
+initialRoute: '/',
+      getPages: [
+        GetPage(
+            name: '/',
+            page: () => const LogIn(),
+            middlewares: [AuthMiddleWare(), SuperMiddleWare()]),
+        GetPage(
+          name: '/home',
+          page: () => const Home(),
+        ),
+        GetPage(
+          name: '/admin',
+          page: () => const Admin(),
+        ),
+        GetPage(
+          name: '/super',
+          page: () => const Super(),
+        ),
+      ],
+
+      class SuperMiddleWare extends GetMiddleware
+{
+  @override
+  int? get priority => 1;
+  var x=false;
+  @override
+  RouteSettings? redirect(String? route) {
+    
+    if(x==true) return const RouteSettings(name: 'super');
+    return super.redirect(route);
+    
+  }
+}
+
+class AuthMiddleWare extends GetMiddleware
+{
+  @override
+  int? get priority => 2;
+  
+  @override
+  RouteSettings? redirect(String? route) {
+    if(sharedPref?.getString('role') =='user') return const RouteSettings(name: '/home');
+    if(sharedPref?.getString('role') =='admin') return const RouteSettings(name: '/admin');
+    
+    return super.redirect(route);
+    
+  }
+}
