@@ -1,0 +1,62 @@
+TextFormField(
+                  controller: numberController,
+                  validator: (value) {
+                    if(value!.isEmpty)
+                    {
+                      return 'empty form';
+                    }
+                    return null;
+                  },
+                  textInputAction: TextInputAction.search,
+                  textAlign: TextAlign.center,
+                  
+                  onEditingComplete: (){print('object');},
+                  initialValue: 'atef',    
+                  keyboardType: TextInputType.emailAddress,
+                  maxLength: 20,
+                  maxLines: 2,
+                  maxLines: 2,ef
+                  style: const TextStyle(
+                    color: Colors.pink,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  decoration: const InputDecoration(
+                    hintText: 'how much time do you use technological devices'
+                  ),
+                  obscureText: true,
+                  cursorColor: Colors.teal,
+                  cursorHeight: 20,
+                  cursorWidth: 4,
+                  decoration: const InputDecoration(
+                    // hintText: 'enter name',
+                    prefixIcon: Icon(Icons.abc),
+                    suffix: Icon(Icons.abc),
+                    icon:Icon(Icons.ac_unit_outlined),
+                    iconColor: Colors.teal,
+                    labelText: 'enter name',
+                    filled: true,
+                    // fillColor: Colors.amber,
+                    enabled: true,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderSide: BorderSide(color: Colors.teal,width: 5,)
+                    ),
+                    disabledBorder:  OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderSide: BorderSide(color: Colors.black,width: 5,)
+                    ),
+                    focusedBorder:  OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderSide: BorderSide(color: Colors.black,width: 5,)
+                    ),
+                    // border:  OutlineInputBorder(
+                    //   borderRadius: BorderRadius.all(Radius.circular(20)),
+                    //   borderSide: BorderSide(color: Colors.teal,width: 5,)
+                    // ),// for all status
+                    // enabledBorder: OutlineInputBorder(
+            
+                    // ),
+                    focusColor: Colors.red,
+                  ),
+                ),
