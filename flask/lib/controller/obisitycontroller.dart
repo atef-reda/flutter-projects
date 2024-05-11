@@ -149,7 +149,7 @@ class ObisityController extends GetxController {
           alcoholVal != null &&
           transportationVal != null &&
           vegetablesVal != null) {
-        response = await postData('http://192.168.1.4:5000/predict', data!);
+        response = await postData('https://machine-project-app-437e92dd5e13.herokuapp.com/predict', data!);
         response.fold((l) => null, (r) {
           print(r[0]['prediction']);
           showDialog(content: r[0]['prediction']);
